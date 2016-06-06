@@ -1,0 +1,88 @@
+using UnityEngine;
+using System.Collections;
+
+public class FightDraft1 : MonoBehaviour 
+{
+	public float playerHealth = 100.0f;	
+	public float enemyHealth = 100.0f;
+	public float actionPoints = 10.0f;
+	public float punchDamage = 5.0f;
+	public bool turnEnd = false;
+	public bool enemyDead = false;
+	int raiderDamage;
+	int raiderHit;
+	int messagePlay;
+	int playerHit;
+	int playerDamage;
+		
+	void Start()
+	{
+
+	}
+		
+    void OnMouseDown()
+	{
+		playerHit = Random.Range (0, 11);
+		playerDamage = Random.Range (1, 9);
+		print (playerDamage);
+		print (playerHit);
+		if (actionPoints > 0.0f) 
+		{
+			if (playerHit >= 5)
+			{
+			  enemyHealth = enemyHealth - playerDamage;
+			  actionPoints -= 10.0f;
+			  print ("You hit the raider.");
+			  print ("The raider took " + playerDamage + " points of damage.");
+			  print ("The raider has " + enemyHealth + " health points left.");
+			  print ("You have " + actionPoints + " Action Points left.");
+			}
+			else
+			{
+			  print ("You missed the raider");
+			  actionPoints -= 10.0f;
+			}
+		} 
+		else 
+		{
+			print ("You have no remaining action points");
+			print ("Ending Turn...");
+			turnEnd = true;
+		}
+	}
+
+	void Update()
+	{
+		if (turnEnd == true) 
+		{
+
+			raiderDamage = Random.Range (1, 9);
+			print (raiderDamage);
+			raiderHit = Random.Range (0, 11);
+			print (raiderHit);
+
+			if (raiderHit > 5) 
+			{
+				print ("The raider punches you");
+				turnEnd = false;
+				playerHealth = playerHealth - raiderDamage;
+				print ("The raider done " + raiderDamage + " damage.");
+				print ("You have " + playerHealth + " health remaining.");
+				actionPoints = 10.0f;
+			}
+			else
+			{
+				print ("The raider missed");
+				turnEnd = false;
+				actionPoints = 10.0f;
+			}
+		}
+		if (enemyHealth <= 0.0f)
+		{
+			enemyDead = true;
+		    print ("The raider has died");
+			enemyHealth += 1.0f;
+			Application.LoadLevel("Fallout'77-worldMap");
+	   }
+   }
+}
